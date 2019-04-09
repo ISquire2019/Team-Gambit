@@ -1,10 +1,11 @@
 #include <iostream>
-#include <fstream>
-#include <string>
+#include <fstream> //ifstream, ofstream
 #include <cstdlib> //exit function
 #include <time.h> //time NULL
 #include <stdlib.h> //rand(); srand()
-#include <vector>
+#include <algorithm> //sorting
+#include <string> //toupper
+#include <vector> //vectors, push_back(), etc.
 
 using namespace std;
 
