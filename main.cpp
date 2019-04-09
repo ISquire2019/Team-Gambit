@@ -11,7 +11,7 @@ using namespace std;
 
 //prototypes
 void displayMenu(int &);
-void populateVector(vector<string>);
+void populateVector(vector<string>, int);
 
 int main()
 {
@@ -24,18 +24,23 @@ int main()
     //initialize variables
     string answer;
 
-    //choose a random answer
     int choice;
 
     displayMenu(choice);
 
-    populateVector(words);
+    populateVector(words,choice);
 
 
     return 0;
 }
 void displayMenu(int & choice)
 {
+    /*
+    Function: displayMenu
+    Programmer: Isaiah Sule
+    Date: 4-8-2019
+    Description: Has the user choose the topic they wish to use to play Hangman.
+    */
     do
     {
         cout << "Please choose from the following options:" << endl;
@@ -53,15 +58,17 @@ void displayMenu(int & choice)
 
     }while(cin.fail() || choice > 6 || choice < 1);
 }
-void populateVector(vector<string>arr)
+void populateVector(vector<string>arr, const int choice)
 {
+    /*
+    Function: populateVector
+    Programmer: Isaiah Sule
+    Date: 4-8-2019
+    Description: Opens a file based on t
+    */
     ifstream iFile;
 
-
-    //choose a file to open
-    int chance = rand() % 5 + 1;
-
-    switch(chance)
+    switch(choice)
     {
     case 1:
         iFile.open("Animals.txt");
@@ -78,18 +85,29 @@ void populateVector(vector<string>arr)
     case 5:
         iFile.open("Countries.txt");
         break;
-    default:
-        cout << "Something went wrong." << endl;
+    default: //safe code
+        cout << "Something went wrong. File not found" << endl;
         cout << "Try again." << endl;
         cout << "Exiting..." << endl;
         break;
     }
-    cout << "Reading file " << iFile << "..." << endl;
 
-    cout << "Populating vector..." << endl;
+    //place data into the vector
+    string line; //stores data from each line of the file
+    while(!iFile.eof())
+    {
+        getline(iFile,line);
+        arr.push_back(line);
+    }
+}
+void chooseSecretAnswer(vector<string>arr)
+{
+    string answer;
 
+    int arrIndex;
 
-    //supposedly, I'd place the data within the file within each part of the vector
-    //VVVV
+    arrIndex = rand() % arr.size() + 1; // between 1 to the max size of the array
+
+    answer = toupper(arr.at(arrIndex));
 
 }
