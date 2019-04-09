@@ -29,9 +29,17 @@ int main()
 
     displayMenu(choice);
 
+    if(choice == 6)
+    {
+        cout << "Thank you for playing our game" << endl;
+        cout << "Have a good day." << endl;
+        return 0;
+    }
+
+
     populateVector(words,choice);
 
-    char choices[26] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+    //char choices[26] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 
     chooseSecretAnswer(words);
 
@@ -62,13 +70,14 @@ void displayMenu(int & choice)
 
     }while(cin.fail() || choice > 6 || choice < 1);
 }
-void populateVector(vector<string> &arr, const int choice)
+void populateVector(vector<string> &arr, const int choice) //choice should not be interfered with while in this function
 {
     /*
     Function: populateVector
     Programmer: Isaiah Sule
     Date: 4-8-2019
-    Description: Opens a file based on t
+    Description: Opens a file based on the choice the user made from the last function
+    Parameters: vector<string> & arr, const int choice
     */
     ifstream iFile;
 
@@ -90,9 +99,9 @@ void populateVector(vector<string> &arr, const int choice)
         iFile.open("Countries.txt");
         break;
     default: //safe code
-        cout << "Something went wrong. File not found" << endl;
+        cout << "Something went wrong. File not found." << endl;
         cout << "Try again." << endl;
-        cout << "Exiting..." << endl;
+        cout << "EXITING..." << endl;
         break;
     }
 
@@ -106,10 +115,19 @@ void populateVector(vector<string> &arr, const int choice)
 }
 void chooseSecretAnswer(vector<string>arr)
 {
+    /*
+    Function: chooseSecretAnswer
+    Programmer: Isaiah Sule
+    Date: 4-8-2019
+    Description: Creates an index out of a random number between 1 and the size of the vector.
+                 Stores the result in an integer, arrIndex.
+                 Declares secret answer using the stored index.
+    Parameters: vector<string>arr
+    */
     string secretAnswer;
     int arrIndex;
 
-    arrIndex = rand() % arr.size() + 1; // between 1 to the max size of the array
+    arrIndex = rand() % arr.size() + 1; // between 1 and the max size of the vector
     secretAnswer = arr.at(arrIndex);
 
     cout << "The secret answer is " << secretAnswer << endl;
