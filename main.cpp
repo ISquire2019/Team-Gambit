@@ -50,7 +50,7 @@ void displayMenu(int & choice)
     /*
     Function: displayMenu
     Programmer: Isaiah Sule
-    Date: 4-8-2019
+    Date: 4-9-2019
     Description: Has the user choose the topic they wish to use to play Hangman.
     */
     do
@@ -75,7 +75,7 @@ void populateVector(vector<string> &arr, const int choice) //choice should not b
     /*
     Function: populateVector
     Programmer: Isaiah Sule
-    Date: 4-8-2019
+    Date: 4-9-2019
     Description: Opens a file based on the choice the user made from the last function
     Parameters: vector<string> & arr, const int choice
     */
@@ -118,7 +118,7 @@ void chooseSecretAnswer(vector<string>arr)
     /*
     Function: chooseSecretAnswer
     Programmer: Isaiah Sule
-    Date: 4-8-2019
+    Date: 4-9-2019
     Description: Creates an index out of a random number between 1 and the size of the vector.
                  Stores the result in an integer, arrIndex.
                  Declares secret answer using the stored index.
