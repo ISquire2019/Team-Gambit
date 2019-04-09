@@ -11,7 +11,8 @@ using namespace std;
 
 //prototypes
 void displayMenu(int &);
-void populateVector(vector<string>, int);
+void populateVector(vector<string> & , int);
+void chooseSecretAnswer(vector<string>);
 
 int main()
 {
@@ -30,6 +31,9 @@ int main()
 
     populateVector(words,choice);
 
+    char choices[26] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+
+    chooseSecretAnswer(words);
 
     return 0;
 }
@@ -58,7 +62,7 @@ void displayMenu(int & choice)
 
     }while(cin.fail() || choice > 6 || choice < 1);
 }
-void populateVector(vector<string>arr, const int choice)
+void populateVector(vector<string> &arr, const int choice)
 {
     /*
     Function: populateVector
@@ -102,12 +106,11 @@ void populateVector(vector<string>arr, const int choice)
 }
 void chooseSecretAnswer(vector<string>arr)
 {
-    string answer;
-
+    string secretAnswer;
     int arrIndex;
 
     arrIndex = rand() % arr.size() + 1; // between 1 to the max size of the array
+    secretAnswer = arr.at(arrIndex);
 
-    answer = toupper(arr.at(arrIndex));
-
+    cout << "The secret answer is " << secretAnswer << endl;
 }
