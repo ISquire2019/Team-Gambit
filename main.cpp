@@ -15,7 +15,8 @@ int MAX_WORD = 1;       //not const as file will change value
 //prototypes
 void displayMenu(int &);
 void populateVector(vector<string> & , int);
-void chooseSecretAnswer(vector<string>);
+string chooseSecretAnswer(vector<string>);
+void displayGame();
 
 int main()
 {
@@ -48,8 +49,8 @@ int main()
     char choices[26] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 
 
-    chooseSecretAnswer(words);
-
+    answer = chooseSecretAnswer(words);
+    cout << answer;
 
     return 0;
 }
@@ -85,9 +86,11 @@ void populateVector(vector<string> &arr, const int choice) //choice should not b
     /*
     Function    : populateVector
     Programmer  : Isaiah Sule
+                  Eros Rodriguez
     Date        : 4-9-2019
     Description : Opens a file based on the choice the user made from the last function
-    Parameters  : vector<string> & arr, const int choice
+    Parameters  : arr           (vector<string>) byReference
+                  choice        (const int) byValue
     Returns     :
     */
     ifstream iFile;
@@ -128,17 +131,17 @@ void populateVector(vector<string> &arr, const int choice) //choice should not b
         arr.push_back(line); //stores line string in arr vector
     }
 }
-void chooseSecretAnswer(vector<string> arr)
+string chooseSecretAnswer(vector<string> arr)
 {
     /*
     Function    : chooseSecretAnswer
     Programmer  : Isaiah Sule
     Date        : 4-9-2019
     Description : Creates an index out of a random number between 1 and the size of the vector.
-                 Stores the result in an integer, arrIndex.
-                 Declares secret answer using the stored index.
-    Parameters  : vector<string>arr
-    Returns     :
+                  Stores the result in an integer, arrIndex.
+                  Declares secret answer using the stored index.
+    Parameters  : vector<string>arr     (string) byValue
+    Returns     : secretAnswer          (string)
     */
     string secretAnswer;
     int arrIndex;
@@ -149,7 +152,10 @@ void chooseSecretAnswer(vector<string> arr)
 
 
     cout << "The secret answer is " << secretAnswer << endl;
+    return secretAnswer;
 }
+
+
 
 /****************************************************************************
                         Professor-provided functions
