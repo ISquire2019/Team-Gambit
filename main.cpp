@@ -36,11 +36,14 @@ int main()
     {
         cout << "Thank you for playing our game" << endl;
         cout << "Have a good day." << endl;
-        EXIT_SUCCESS;
+        return 0;
     }
 
 
     populateVector(words,choice);
+
+    for(int i = 0; i < words.size(); i++)
+        cout << words.at(i) << endl;
 
     //char choices[26] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 
@@ -52,10 +55,12 @@ int main()
 void displayMenu(int & choice)
 {
     /*
-    Function: displayMenu
-    Programmer: Isaiah Sule
-    Date: 4-9-2019
-    Description: Has the user choose the topic they wish to use to play Hangman.
+    Function    : displayMenu
+    Programmer  : Isaiah Sule
+    Date        : 4-9-2019
+    Description : Has the user choose the topic they wish to use to play Hangman.
+    Parameters  :
+    Returns     :
     */
         cout << "Please choose from the following options:" << endl;
         cout << "1. Animals" << endl;
@@ -77,11 +82,12 @@ void displayMenu(int & choice)
 void populateVector(vector<string> &arr, const int choice) //choice should not be interfered with while in this function
 {
     /*
-    Function: populateVector
-    Programmer: Isaiah Sule
-    Date: 4-9-2019
-    Description: Opens a file based on the choice the user made from the last function
-    Parameters: vector<string> & arr, const int choice
+    Function    : populateVector
+    Programmer  : Isaiah Sule
+    Date        : 4-9-2019
+    Description : Opens a file based on the choice the user made from the last function
+    Parameters  : vector<string> & arr, const int choice
+    Returns     :
     */
     ifstream iFile;
 
@@ -117,32 +123,32 @@ void populateVector(vector<string> &arr, const int choice) //choice should not b
         arr.push_back(line);
     }
 }
-void chooseSecretAnswer(vector<string>arr)
+void chooseSecretAnswer(vector<string> arr)
 {
     /*
-    Function: chooseSecretAnswer
-    Programmer: Isaiah Sule
-    Date: 4-9-2019
-    Description: Creates an index out of a random number between 1 and the size of the vector.
+    Function    : chooseSecretAnswer
+    Programmer  : Isaiah Sule
+    Date        : 4-9-2019
+    Description : Creates an index out of a random number between 1 and the size of the vector.
                  Stores the result in an integer, arrIndex.
                  Declares secret answer using the stored index.
-    Parameters: vector<string>arr
+    Parameters  : vector<string>arr
+    Returns     :
     */
     string secretAnswer;
     int arrIndex;
 
-    arrIndex = rand() % arr.size() + 1; // between 1 and the max size of the vector
+    MAX_WORD = arr.size(); // between 1 and the max size of the vector
+    arrIndex = rand() % (MAX_WORD - MIN_WORD + 1) + MIN_WORD;
     secretAnswer = arr.at(arrIndex);
+
 
     cout << "The secret answer is " << secretAnswer << endl;
 }
 
-/*
-void stateChange()
-{
-
-}
-*/
+/****************************************************************************
+                        Professor-provided functions
+****************************************************************************/
 void stateStart()
 {
     cout <<"\n\n"
