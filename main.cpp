@@ -9,6 +9,8 @@
 
 using namespace std;
 
+const int MIN_WORD = 1; //const since there will always be at least 1 per file
+int MAX_WORD = 1;       //not const as file will change value
 
 //prototypes
 void displayMenu(int &);
@@ -34,7 +36,7 @@ int main()
     {
         cout << "Thank you for playing our game" << endl;
         cout << "Have a good day." << endl;
-        return 0;
+        EXIT_SUCCESS;
     }
 
 
@@ -43,6 +45,7 @@ int main()
     //char choices[26] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 
     chooseSecretAnswer(words);
+
 
     return 0;
 }
@@ -54,8 +57,6 @@ void displayMenu(int & choice)
     Date: 4-9-2019
     Description: Has the user choose the topic they wish to use to play Hangman.
     */
-    do
-    {
         cout << "Please choose from the following options:" << endl;
         cout << "1. Animals" << endl;
         cout << "2. Sports" << endl;
@@ -63,13 +64,15 @@ void displayMenu(int & choice)
         cout << "4. Fruits and Vegetables" << endl;
         cout << "5. Countries" << endl;
         cout << "6. Exit" << endl;
-        cout << "Your choice: " << endl;
-
+     do
+    {
+        cout << "Your choice: ";
         cin.clear();
         cin.sync();
         cin >> choice;
 
     }while(cin.fail() || choice > 6 || choice < 1);
+
 }
 void populateVector(vector<string> &arr, const int choice) //choice should not be interfered with while in this function
 {
@@ -132,4 +135,101 @@ void chooseSecretAnswer(vector<string>arr)
     secretAnswer = arr.at(arrIndex);
 
     cout << "The secret answer is " << secretAnswer << endl;
+}
+
+/*
+void stateChange()
+{
+
+}
+*/
+void stateStart()
+{
+    cout <<"\n\n"
+         <<"   +----+  "<< endl
+         <<"   |    |  "<< endl
+         <<"   |       "<< endl
+         <<"   |       "<< endl
+         <<"   |       "<< endl
+         <<"   |       "<< endl
+         <<"  ===============\n"
+         << endl;
+}
+
+void stateHead()
+{
+    cout <<"\n\n"
+         <<"   +----+  "<< endl
+         <<"   |    |  "<< endl
+         <<"   |    O  "<< endl
+         <<"   |       "<< endl
+         <<"   |       "<< endl
+         <<"   |       "<< endl
+         <<"  ===============\n"
+         << endl;
+}
+
+void stateBody()
+{
+    cout <<"\n\n"
+         <<"   +----+  "<< endl
+         <<"   |    |  "<< endl
+         <<"   |    O  "<< endl
+         <<"   |    |  "<< endl
+         <<"   |       "<< endl
+         <<"   |       "<< endl
+         <<"  ===============\n"
+         << endl;
+}
+
+void stateOneArm()
+{
+    cout <<"\n\n"
+         <<"   +----+  "<< endl
+         <<"   |    |  "<< endl
+         <<"   |    O  "<< endl
+         <<"   |   /|  "<< endl
+         <<"   |       "<< endl
+         <<"   |       "<< endl
+         <<"  ===============\n"
+         << endl;
+}
+
+void stateBothArms()
+{
+    cout <<"\n\n"
+         <<"   +----+  "<< endl
+         <<"   |    |  "<< endl
+         <<"   |    O  "<< endl
+         <<"   |   /|\\"<< endl
+         <<"   |       "<< endl
+         <<"   |       "<< endl
+         <<"  ===============\n"
+         << endl;
+}
+
+void stateOneLeg()
+{
+    cout <<"\n\n"
+         <<"   +----+  "<< endl
+         <<"   |    |  "<< endl
+         <<"   |    O  "<< endl
+         <<"   |   /|\\"<< endl
+         <<"   |   /   "<< endl
+         <<"   |       "<< endl
+         <<"  ===============\n"
+         << endl;
+}
+
+void stateDead()
+{
+    cout <<"\n\n"
+         <<"   +----+  "<< endl
+         <<"   |    |  "<< endl
+         <<"   |    O  "<< endl
+         <<"   |   /|\\"<< endl
+         <<"   |   / \\"<< endl
+         <<"   | You are Dead"<< endl
+         <<"  ===============\n"
+         << endl;
 }
