@@ -45,7 +45,8 @@ int main()
     for(int i = 0; i < words.size(); i++)
         cout << words.at(i) << endl;
 
-    //char choices[26] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+    char choices[26] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+
 
     chooseSecretAnswer(words);
 
@@ -119,8 +120,12 @@ void populateVector(vector<string> &arr, const int choice) //choice should not b
     string line; //stores data from each line of the file
     while(!iFile.eof())
     {
-        getline(iFile,line);
-        arr.push_back(line);
+        getline(iFile,line);    //grabs characters in line
+        for(int i = 0; i < line.size(); i++) //loops through each character stored in line
+        {
+            line.at(i) = toupper(line.at(i)); //makes letter uppercase
+        }
+        arr.push_back(line); //stores line string in arr vector
     }
 }
 void chooseSecretAnswer(vector<string> arr)
