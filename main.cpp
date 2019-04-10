@@ -11,17 +11,16 @@ using namespace std;
 
 const int MIN_WORD = 1; //const since there will always be at least 1 per file
 int MAX_WORD = 1;       //not const as file will change value
-string allLetters = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z";
 
 //prototypes
 void displayMenu(int &);
 void populateVector(vector<string> & , int);
 string chooseSecretAnswer(vector<string>);
-void displayGame(int );
-void userAnswer(char &);
+void displayGame(string &,string &,string &,int );
+char userAnswer(char &);
 bool letterCheck(string &,char );
-void wordUpdate(bool &, string &, string &,char );
-bool gameWon(bool ,string &,int );
+void wordUpdate(bool &, string &, string &,string &,char );
+//bool gameWon(bool ,string &,int );
 char playAgain(string &);
 void stateStart();
 void stateHead();
@@ -34,12 +33,7 @@ void stateDead();
 int main()
 {
     vector<string>words;
-    int incorrectCounter = 0,
-        correctCounter = 0,
-        maxWordSize;
-    char replay,
-         userInp;
-    bool update;
+
 
     //rand function
     unsigned seed = time(NULL);
@@ -47,7 +41,13 @@ int main()
 
     //initialize variables
     string answer;
-    string blanks;  //to store the "Your Choice" letters
+    string blanks;
+    int incorrectCounter = 0,
+        correctCounter = 0,
+        initial = 0;
+    char replay,
+         userInp;
+    bool update;
 
     int choice;
     do
@@ -63,75 +63,71 @@ int main()
 
 
         populateVector(words,choice);
-/*
-        for(int i = 0; i < words.size(); i++)
-            cout << words.at(i) << endl;
-*/
-    //char choices[26] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 
         do
         {
-
+            if(replay == 'Y')
+            {
+                initial = 0;
+            }
+            string allLetters = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z"; //initializes and refreshes list of available letters
             answer = chooseSecretAnswer(words);
-            maxWordSize = answer.size();
-            //cout << "Answer size before the displayGame function is: " << answer.size() << endl;
+            if(initial == 0)
+            {
+                for(int i = 0; i < answer.size(); i++)
+                {
+                    blanks.push_back('_');
+                }
+                initial++;
+            }
             for(int i = 0; i < answer.size(); i++)
             {
-                blanks.push_back('_');
+                blanks.at(i) = '_';
             }
 
             do
             {
-                displayGame(incorrectCounter);
-                cout << "Available letters: "
-                     << allLetters << endl;
-                cout << "Your Choice: ";
-                for(int i = 0; i < answer.size(); i++)
-                {
-                    cout << blanks.at(i) << " ";
-                }
+                displayGame(answer, blanks, allLetters, incorrectCounter);
+
                 if(incorrectCounter == 6)
                 {
                     break;
                 }
-                //cout << answer << endl;
-                userAnswer(userInp);
-                //cout << "update in main before letterCheck function: " << update << endl;
+
+                userInp = userAnswer(userInp);
                 update = letterCheck(answer, userInp);
-                //cout << "update in main after letterCheck function: " << update << endl;
-                wordUpdate(update, answer, blanks, userInp);
-                //cout << "update in main after functions: " << update << endl;
-                if(update == true)
-                {
-                    for(int i = 0; i < answer.size(); i++)
-                    {
-                        if(answer.at(i) == userInp)
+                wordUpdate(update, answer, blanks, allLetters, userInp);
+                    //if(blanks.at(i) == userInp)
+                    //{
+                        if(update == true)
                         {
-                            correctCounter++;
+                            for(int i = 0; i < answer.size(); i++)
+                            {
+                                if(answer.at(i) == userInp)
+                                {
+                                    correctCounter++;
+                                    cout << "correctCounter: " << correctCounter << endl;
+                                }
+                            }
                         }
-                    }
-                }
-                else if(update == false)
-                {
-                    incorrectCounter++;
-                }
-                //cout << "Answer size: " << answer.size() << endl;
-                //cout << "correctCounter after addition: " << correctCounter << endl;
-                //cout << "incorrectCounter after addition: " << incorrectCounter << endl;
-                if(correctCounter == answer.size())
-                {
-                    displayGame(incorrectCounter);
-                cout << "Available letters: "
-                     << allLetters << endl;
-                cout << "Your Choice: ";
-                for(int i = 0; i < answer.size(); i++)
-                {
-                    cout << blanks.at(i) << " ";
-                }
-                    cout << "\n\nCongratulations, You won!!" << endl;
-                    break;
-                }
+
+                        else if(update == false)
+                        {
+                            incorrectCounter++;
+                        }
+                        //cout << "Answer size: " << answer.size() << endl;
+                        //cout << "correctCounter after addition: " << correctCounter << endl;
+                        //cout << "incorrectCounter after addition: " << incorrectCounter << endl;
+                        if(correctCounter == answer.size())
+                        {
+                            displayGame(answer, blanks, allLetters, incorrectCounter);
+                            cout << "\n\nCongratulations, You won!!" << endl;
+                            break;
+                        }
             }while(incorrectCounter != 7);
+            cin.clear();
+            correctCounter = 0;
+            incorrectCounter = 0;
             replay = playAgain(answer);
         }while(replay == 'Y');
     }while(replay == 'N');
@@ -187,23 +183,23 @@ void populateVector(vector<string> &arr, const int choice) //choice should not b
     {
     case 1:
         iFile.open("Animals.txt");
-        //cout << "File name: Animals.txt" << endl;
+        cout << "File name: Animals.txt" << endl;
         break;
     case 2:
         iFile.open("Sports.txt");
-        //cout << "File name: Sports.txt" << endl;
+        cout << "File name: Sports.txt" << endl;
         break;
     case 3:
         iFile.open("Cars.txt");
-        //cout << "File name: Cars.txt" << endl;
+        cout << "File name: Cars.txt" << endl;
         break;
     case 4:
         iFile.open("FruitsAndVegetables.txt");
-        //cout << "File name: Fruits and Vegetables.txt" << endl;
+        cout << "File name: Fruits and Vegetables.txt" << endl;
         break;
     case 5:
         iFile.open("Countries.txt");
-        //cout << "File name: Countries.txt" << endl;
+        cout << "File name: Countries.txt" << endl;
         break;
     default: //safe code
         cout << "Something went wrong. File not found." << endl;
@@ -213,7 +209,7 @@ void populateVector(vector<string> &arr, const int choice) //choice should not b
     }
 
     //place data into the vector
-    //cout << "MyV Size is " << arr.size() << endl;
+    cout << "MyV Size is " << arr.size() << endl;
     arr.clear();
     while(!iFile.eof())
     {
@@ -225,7 +221,7 @@ void populateVector(vector<string> &arr, const int choice) //choice should not b
         arr.push_back(line); //stores line string in arr vector
     }
     iFile.close();
-    //cout << "myV size is " << arr.size() << endl;
+    cout << "myV size is " << arr.size() << endl;
 }
 string chooseSecretAnswer(vector<string> arr)
 {
@@ -258,9 +254,8 @@ string chooseSecretAnswer(vector<string> arr)
     Parameters      : answer    (string) byReference
     Returns         : correctCounter    (int)
 ***/
-void displayGame(int incorrectCounter)
+void displayGame(string &answer, string &blanks, string &allLetters, int incorrectCounter)
 {
-    cout << "incorrectCounter in displayGame: " << incorrectCounter << endl;
     switch(incorrectCounter)    //reads incorrectCounter to determine state to display
     {
         case 0:
@@ -285,13 +280,80 @@ void displayGame(int incorrectCounter)
             stateDead();
             break;
     }
+    cout << "Available letters: "
+         << allLetters << endl;
+    cout << "Your Choice: ";
+    for(int i = 0; i < answer.size(); i++)
+    {
+        cout << blanks.at(i) << " ";
+    }
 }
-
-void userAnswer(char &userInp)
+/***
+    Function        : userAnswer
+    Programmer(s)   : Eros Rodriguez
+    Date            : 04/10/2019
+    Parameters      : userInp   (char) byReference
+    Returns         :
+***/
+char userAnswer(char &userInp)
 {
     cout << "\n\nEnter a letter: ";
     cin >> userInp;
+    cout << "" << endl;
     userInp = toupper(userInp);
+
+    if(cin.fail())
+    {
+        cout << "Please input letters only: ";
+        cin.clear();
+        cin >> userInp;
+        userInp = toupper(userInp);
+    }
+    for(int i = 0; i < 10; i++)
+    {
+        switch(userInp)
+        {
+        case 'A':
+        case 'B':
+        case 'C':
+        case 'D':
+        case 'E':
+        case 'F':
+        case 'G':
+        case 'H':
+        case 'I':
+        case 'J':
+        case 'K':
+        case 'L':
+        case 'M':
+        case 'N':
+        case 'O':
+        case 'P':
+        case 'Q':
+        case 'R':
+        case 'S':
+        case 'T':
+        case 'U':
+        case 'V':
+        case 'W':
+        case 'X':
+        case 'Y':
+        case 'Z':
+            return userInp;
+            break;
+        default:
+            cout << "Please input letters only: ";
+            cin.clear();
+            cin >> userInp;
+            userInp = toupper(userInp);
+            if(i == 9)
+            {
+                cout << "Too many failed attempts.\nExiting..." << endl;
+                return 0;
+            }
+        }
+
+    }
 }
 
 /***
@@ -330,11 +392,11 @@ bool letterCheck(string &answer, char userInp)
     Date            : 04/10/2019
     Parameters      : update    (boolean) byValue
                       answer    (string) byReference
+                      blanks    (string) byReference
                       userInp   (char) byValue
-                      incorrectCounter  (int) byValue
-    Returns         : incorrectCounter  (int)
+    Returns         :
 ***/
-void wordUpdate(bool &update, string &answer, string &blanks, char userInp)
+void wordUpdate(bool &update, string &answer, string &blanks, string &allLetters, char userInp)
 {
     if(update == true)  //verifies that user input matches at least one letter of the secret word
     {
@@ -345,34 +407,17 @@ void wordUpdate(bool &update, string &answer, string &blanks, char userInp)
                 allLetters.at(i) = ' ';     //updates available letters
             }
         }
-        //cout << "Available letters: "
-          //   << allLetters << "\n" << endl;
 
         for(int i = 0; i < answer.size(); i++)  //loops through the characters of the answer
         {
             if(answer.at(i) == userInp)     //Checks to see if user's input matches a letter of the secret answer
             {
                 blanks.at(i) = userInp;
-            //    cout << blanks.at(i) << " " << endl;
             }
         }
-    }/*
-    else if(update == false)
-    {
-        incorrectCounter++;
     }
-    return incorrectCounter;
-    */
 }
-/*
-bool gameWon(bool update, string &answer, int correctCounter)
-{
-    if(correctCounter == answer.size())
-    {
-        update = true;
-    }
-    return update;
-}
+
 /***
     Function        : playAgain
     Programmer(s)   : Eros Rodriguez
@@ -390,7 +435,29 @@ char playAgain(string &answer)
     cout << "Your Choice: ";
     cin >> userInp;
     userInp = toupper(userInp);
-    return userInp;
+    for(int i = 0; i < 10; i++)
+    {
+        switch(userInp)
+        {
+        case 'Y':
+        case 'N':
+            return userInp;
+            break;
+        default:
+
+            cout << "not a valid choice try again: ";
+            cin.clear();
+            cin >> userInp;
+            userInp = toupper(userInp);
+            if(i == 9)
+            {
+                cout << "Too many failed attempts.\n"
+                     << "Exiting..." << endl;
+                return 0;
+            }
+        }
+    }
+
 }
 
 /****************************************************************************
