@@ -96,11 +96,11 @@ int main()
                 }
                 //cout << answer << endl;
                 userAnswer(userInp);
-                cout << "update in main before letterCheck function: " << update << endl;
+                //cout << "update in main before letterCheck function: " << update << endl;
                 update = letterCheck(answer, userInp);
-                cout << "update in main after letterCheck function: " << update << endl;
+                //cout << "update in main after letterCheck function: " << update << endl;
                 wordUpdate(update, answer, blanks, userInp);
-                cout << "update in main after functions: " << update << endl;
+                //cout << "update in main after functions: " << update << endl;
                 if(update == true)
                 {
                     for(int i = 0; i < answer.size(); i++)
@@ -115,9 +115,9 @@ int main()
                 {
                     incorrectCounter++;
                 }
-                cout << "Answer size: " << answer.size() << endl;
-                cout << "correctCounter after addition: " << correctCounter << endl;
-                cout << "incorrectCounter after addition: " << incorrectCounter << endl;
+                //cout << "Answer size: " << answer.size() << endl;
+                //cout << "correctCounter after addition: " << correctCounter << endl;
+                //cout << "incorrectCounter after addition: " << incorrectCounter << endl;
                 if(correctCounter == answer.size())
                 {
                     displayGame(incorrectCounter);
@@ -187,23 +187,23 @@ void populateVector(vector<string> &arr, const int choice) //choice should not b
     {
     case 1:
         iFile.open("Animals.txt");
-        cout << "File name: Animals.txt" << endl;
+        //cout << "File name: Animals.txt" << endl;
         break;
     case 2:
         iFile.open("Sports.txt");
-        cout << "File name: Sports.txt" << endl;
+        //cout << "File name: Sports.txt" << endl;
         break;
     case 3:
         iFile.open("Cars.txt");
-        cout << "File name: Cars.txt" << endl;
+        //cout << "File name: Cars.txt" << endl;
         break;
     case 4:
         iFile.open("FruitsAndVegetables.txt");
-        cout << "File name: Fruits and Vegetables.txt" << endl;
+        //cout << "File name: Fruits and Vegetables.txt" << endl;
         break;
     case 5:
         iFile.open("Countries.txt");
-        cout << "File name: Countries.txt" << endl;
+        //cout << "File name: Countries.txt" << endl;
         break;
     default: //safe code
         cout << "Something went wrong. File not found." << endl;
@@ -213,7 +213,7 @@ void populateVector(vector<string> &arr, const int choice) //choice should not b
     }
 
     //place data into the vector
-    cout << "MyV Size is " << arr.size() << endl;
+    //cout << "MyV Size is " << arr.size() << endl;
     arr.clear();
     while(!iFile.eof())
     {
@@ -225,7 +225,7 @@ void populateVector(vector<string> &arr, const int choice) //choice should not b
         arr.push_back(line); //stores line string in arr vector
     }
     iFile.close();
-    cout << "myV size is " << arr.size() << endl;
+    //cout << "myV size is " << arr.size() << endl;
 }
 string chooseSecretAnswer(vector<string> arr)
 {
