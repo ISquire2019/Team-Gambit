@@ -17,10 +17,10 @@ string allLetters = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z";
 void displayMenu(int &);
 void populateVector(vector<string> & , int);
 string chooseSecretAnswer(vector<string>);
-void displayGame();
-char playGame(string &, char );
-bool letterCheck(string &,char &);
-void stateUpdate(bool &);
+int displayGame(string &);
+//char playGame(string &, char );
+bool letterCheck(string &,char );
+//void stateUpdate(bool , string &, char );
 void stateStart();
 void stateHead();
 void stateBody();
@@ -32,8 +32,9 @@ void stateDead();
 int main()
 {
     vector<string>words;
-    char userInp;
-    bool update;
+    int counter;
+    //char userInp;
+    //bool update;
 
     //rand function
     unsigned seed = time(NULL);
@@ -64,13 +65,13 @@ int main()
 
     answer = chooseSecretAnswer(words);
 
-    displayGame();
-    userInp = playGame(answer, userInp);
+    counter = displayGame(answer);
+    //userInp = playGame(answer, userInp);
     //update = letterCheck(answer, userInp);
-    //stateUpdate(update);
+    //stateUpdate(update, answer, userInp);
 
     //cout << answer;
-
+    //}while(counter !=6);
     return 0;
 }
 void displayMenu(int & choice)
@@ -130,7 +131,7 @@ void populateVector(vector<string> &arr, const int choice) //choice should not b
         cout << "File name: Cars.txt" << endl;
         break;
     case 4:
-        iFile.open("Fruits and Vegetables.txt");
+        iFile.open("FruitsAndVegetables.txt");
         cout << "File name: Fruits and Vegetables.txt" << endl;
         break;
     case 5:
@@ -188,12 +189,78 @@ string chooseSecretAnswer(vector<string> arr)
     Parameters      :
     Returns         :
 ***/
-void displayGame()
+int displayGame(string &answer)
 {
+    char userInp;
+    /*
     stateStart();
     cout << allLetters << endl;
-}
+    */
+    int counter = 0;
+    bool update;
 
+        switch(counter)
+        {
+    case 0:
+        stateStart();
+        break;
+    case 1:
+        stateHead();
+        break;
+    case 2:
+        stateBody();
+        break;
+    case 3:
+        stateOneArm();
+        break;
+    case 4:
+        stateBothArms();
+        break;
+    case 5:
+        stateOneLeg();
+        break;
+    case 6:
+        stateDead();
+        break;
+    }
+    cout << "\nYour guess: ";
+    for(int i = 0; i < answer.size(); i++)
+    {
+        cout << "_ ";
+    }
+    //cout << answer << endl;
+    cout << "\n\nEnter a letter: ";
+    cin >> userInp;
+    userInp = toupper(userInp);
+    //return userInp;
+
+    update = letterCheck(answer, userInp);
+
+    if(update == true)
+    {
+        for(int i = 0; i < answer.size(); i++)
+        {
+            if(answer.at(i) == userInp)
+            {
+                for(int i = 0; i < allLetters.size(); i++)
+                {
+                    if(allLetters.at(i) == userInp)
+                    {
+                        allLetters.at(i) = ' ';
+                    }
+                }
+                cout << allLetters << "\n" << endl;
+                cout << userInp << " ";
+
+            }
+            cout << "_ ";
+        }
+    }
+    else if(update == false)
+    {
+        counter++;
+    }
+}
 /***
     Function        : playGame
     Programmer(s)   : Eros Rodriguez
@@ -202,6 +269,7 @@ void displayGame()
                       userInp   (char)   byValue
     Returns         : userInp   (char)
 ***/
+/*
 char playGame(string &answer, char userInp)
 {
     cout << "\nYour guess: ";
@@ -226,6 +294,7 @@ char playGame(string &answer, char userInp)
 ***/
 bool letterCheck(string &answer, char userInp)
 {
+
     bool correct;
     int counter = 0;
     for(int i = 0; i < answer.size(); i++)
@@ -255,6 +324,7 @@ bool letterCheck(string &answer, char userInp)
                       userInp   (char) byValue
     Returns         :
 ***/
+/*
 void stateUpdate(bool update, string &answer, char userInp)
 {
     int counter = 0;
@@ -268,10 +338,11 @@ void stateUpdate(bool update, string &answer, char userInp)
                 {
                     if(allLetters.at(i) == userInp)
                     {
-                        allLetters.at(i) == ' ';
+                        allLetters.at(i) = ' ';
                     }
                 }
-                cout << userInp << " " << endl;
+                cout << allLetters << "\n" << endl;
+                cout << userInp << " ";
 
             }
             cout << "_ ";
@@ -284,6 +355,9 @@ void stateUpdate(bool update, string &answer, char userInp)
 
     switch(counter)
     {
+    case 0:
+        stateStart();
+        break;
     case 1:
         stateHead();
         break;
@@ -304,7 +378,7 @@ void stateUpdate(bool update, string &answer, char userInp)
         break;
     }
 }
-
+*/
 /****************************************************************************
                         Professor-provided functions
 ****************************************************************************/
