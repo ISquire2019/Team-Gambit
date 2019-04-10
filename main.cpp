@@ -11,6 +11,7 @@ using namespace std;
 
 const int MIN_WORD = 1; //const since there will always be at least 1 per file
 int MAX_WORD = 1;       //not const as file will change value
+string allLetters = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z";
 
 //prototypes
 void displayMenu(int &);
@@ -190,7 +191,6 @@ string chooseSecretAnswer(vector<string> arr)
 void displayGame()
 {
     stateStart();
-    string allLetters = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z";
     cout << allLetters << endl;
 }
 
@@ -212,6 +212,7 @@ char playGame(string &answer, char userInp)
     //cout << answer << endl;
     cout << "\n\nEnter a letter: ";
     cin >> userInp;
+    userInp = toupper(userInp);
     return userInp;
 }
 
@@ -250,11 +251,58 @@ bool letterCheck(string &answer, char userInp)
     Programmer(s)   : Eros Rodriguez
     Date            : 04/09/2019
     Parameters      : update    (bool) byValue
+                      answer    (string) byReference
+                      userInp   (char) byValue
     Returns         :
 ***/
-void stateUpdate(bool update)
+void stateUpdate(bool update, string &answer, char userInp)
 {
+    int counter = 0;
+    if(update == true)
+    {
+        for(int i = 0; i < answer.size(); i++)
+        {
+            if(answer.at(i) == userInp)
+            {
+                for(int i = 0; i < allLetters.size(); i++)
+                {
+                    if(allLetters.at(i) == userInp)
+                    {
+                        allLetters.at(i) == ' ';
+                    }
+                }
+                cout << userInp << " " << endl;
 
+            }
+            cout << "_ ";
+        }
+    }
+    else
+    {
+        counter++;
+    }
+
+    switch(counter)
+    {
+    case 1:
+        stateHead();
+        break;
+    case 2:
+        stateBody();
+        break;
+    case 3:
+        stateOneArm();
+        break;
+    case 4:
+        stateBothArms();
+        break;
+    case 5:
+        stateOneLeg();
+        break;
+    case 6:
+        stateDead();
+        break;
+    }
 }
 
 /****************************************************************************
