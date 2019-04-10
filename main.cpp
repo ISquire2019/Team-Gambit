@@ -18,9 +18,9 @@ void displayMenu(int &);
 void populateVector(vector<string> & , int);
 string chooseSecretAnswer(vector<string>);
 int displayGame(string &);
-//char playGame(string &, char );
 bool letterCheck(string &,char );
-//void stateUpdate(bool , string &, char );
+int wordUpdate(bool, string &, char , int);
+char playAgain(string &, int);
 void stateStart();
 void stateHead();
 void stateBody();
@@ -33,7 +33,7 @@ int main()
 {
     vector<string>words;
     int counter;
-    //char userInp;
+    char replay;
     //bool update;
 
     //rand function
@@ -44,34 +44,36 @@ int main()
     string answer;
 
     int choice;
-
-    displayMenu(choice);
-
-    if(choice == 6)
+    do
     {
-        cout << "Thank you for playing our game" << endl;
-        cout << "Have a good day." << endl;
-        return 0;
-    }
+        displayMenu(choice);
+
+        if(choice == 6)
+        {
+            cout << "Thank you for playing our game" << endl;
+            cout << "Have a good day." << endl;
+            return 0;
+        }
 
 
-    populateVector(words,choice);
+        populateVector(words,choice);
 
-    for(int i = 0; i < words.size(); i++)
-        cout << words.at(i) << endl;
+        for(int i = 0; i < words.size(); i++)
+            cout << words.at(i) << endl;
 
     //char choices[26] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 
+        do
+        {
+            answer = chooseSecretAnswer(words);
+            cout << "Answer before the displayGame function is: " << answer.size() << endl;
+            counter = displayGame(answer);
+            replay = playAgain(answer, counter);
 
-    answer = chooseSecretAnswer(words);
+            //cout << answer;
+        }while(replay == 'Y');
+    }while(replay == 'N');
 
-    counter = displayGame(answer);
-    //userInp = playGame(answer, userInp);
-    //update = letterCheck(answer, userInp);
-    //stateUpdate(update, answer, userInp);
-
-    //cout << answer;
-    //}while(counter !=6);
     return 0;
 }
 void displayMenu(int & choice)
@@ -91,15 +93,18 @@ void displayMenu(int & choice)
         cout << "4. Fruits and Vegetables" << endl;
         cout << "5. Countries" << endl;
         cout << "6. Exit" << endl;
-     do
-    {
         cout << "Your choice: ";
         cin.clear();
         cin.sync();
         cin >> choice;
+    while(cin.fail() || choice > 6 || choice < 1)
+    {
+        cout << "Please enter a valid number: ";
+        cin.clear();
+        cin.sync();
+        cin >> choice;
 
-    }while(cin.fail() || choice > 6 || choice < 1);
-
+    }
 }
 void populateVector(vector<string> &arr, const int choice) //choice should not be interfered with while in this function
 {
@@ -147,6 +152,7 @@ void populateVector(vector<string> &arr, const int choice) //choice should not b
 
     //place data into the vector
     cout << "MyV Size is " << arr.size() << endl;
+    arr.clear();
     while(!iFile.eof())
     {
         getline(iFile,line);    //grabs characters in line
@@ -156,6 +162,7 @@ void populateVector(vector<string> &arr, const int choice) //choice should not b
         }
         arr.push_back(line); //stores line string in arr vector
     }
+    iFile.close();
     cout << "myV size is " << arr.size() << endl;
 }
 string chooseSecretAnswer(vector<string> arr)
@@ -186,102 +193,107 @@ string chooseSecretAnswer(vector<string> arr)
     Function        : displayGame
     Programmer(s)   : Eros Rodriguez
     Date            : 04/09/2019
-    Parameters      :
-    Returns         :
+    Parameters      : answer    (string) byReference
+    Returns         : correctCounter    (int)
 ***/
 int displayGame(string &answer)
 {
     char userInp;
-    /*
-    stateStart();
-    cout << allLetters << endl;
-    */
-    int counter = 0;
+    int incorrectCounter = 0;
+    int correctCounter = 0;
     bool update;
 
-        switch(counter)
-        {
-    case 0:
-        stateStart();
-        break;
-    case 1:
-        stateHead();
-        break;
-    case 2:
-        stateBody();
-        break;
-    case 3:
-        stateOneArm();
-        break;
-    case 4:
-        stateBothArms();
-        break;
-    case 5:
-        stateOneLeg();
-        break;
-    case 6:
-        stateDead();
-        break;
-    }
+    cout << "Size of the answer in displayGame function is: " << answer.size() << endl;
+
+    stateStart();
+    cout << "Available letters: "
+         << allLetters
+         << endl;
     cout << "\nYour guess: ";
     for(int i = 0; i < answer.size(); i++)
-    {
-        cout << "_ ";
-    }
-    //cout << answer << endl;
+        {
+            cout << "_ ";
+        }
+
+    cout << answer << endl;
     cout << "\n\nEnter a letter: ";
     cin >> userInp;
     userInp = toupper(userInp);
-    //return userInp;
 
     update = letterCheck(answer, userInp);
-
+    cin.clear();
     if(update == true)
     {
         for(int i = 0; i < answer.size(); i++)
         {
             if(answer.at(i) == userInp)
             {
-                for(int i = 0; i < allLetters.size(); i++)
-                {
-                    if(allLetters.at(i) == userInp)
-                    {
-                        allLetters.at(i) = ' ';
-                    }
-                }
-                cout << allLetters << "\n" << endl;
-                cout << userInp << " ";
-
+                correctCounter++;
             }
-            cout << "_ ";
         }
     }
-    else if(update == false)
+
+    incorrectCounter = wordUpdate(update, answer, userInp, incorrectCounter);
+
+
+
+    do
     {
-        counter++;
+        //incorrectCounter = wordUpdate(update, answer, userInp, incorrectCounter);
+        switch(incorrectCounter)
+        {
+        case 0:
+            stateStart();
+            break;
+        case 1:
+            stateHead();
+            break;
+        case 2:
+            stateBody();
+            break;
+        case 3:
+            stateOneArm();
+            break;
+        case 4:
+            stateBothArms();
+            break;
+        case 5:
+            stateOneLeg();
+            break;
+        case 6:
+            stateDead();
+            break;
     }
-}
-/***
-    Function        : playGame
-    Programmer(s)   : Eros Rodriguez
-    Date            : 04/09/2019
-    Parameters      : answer    (string) byReference
-                      userInp   (char)   byValue
-    Returns         : userInp   (char)
-***/
-/*
-char playGame(string &answer, char userInp)
-{
-    cout << "\nYour guess: ";
-    for(int i = 0; i < answer.size(); i++)
+    if(incorrectCounter > 5)
     {
-        cout << "_ ";
+        incorrectCounter = 7;
     }
-    //cout << answer << endl;
-    cout << "\n\nEnter a letter: ";
-    cin >> userInp;
-    userInp = toupper(userInp);
-    return userInp;
+    else
+    {
+        incorrectCounter = wordUpdate(update, answer, userInp, incorrectCounter);
+
+        cout << answer << endl;
+        cout << "\n\nEnter a letter: ";
+        cin >> userInp;
+        userInp = toupper(userInp);
+
+        update = letterCheck(answer, userInp);
+        cin.clear();
+        if(update == true)
+    {
+        for(int i = 0; i < answer.size(); i++)
+        {
+            if(answer.at(i) == userInp)
+            {
+                correctCounter++;
+            }
+        }
+    }
+    cout << "correct counter is: " << correctCounter << endl;
+    cout << "answer size is: " << answer.size() << endl;
+    }
+    }while(incorrectCounter != 7 || correctCounter != answer.size());
+    return correctCounter;
 }
 
 /***
@@ -316,69 +328,81 @@ bool letterCheck(string &answer, char userInp)
 }
 
 /***
-    Function        : stateUpdate
     Programmer(s)   : Eros Rodriguez
-    Date            : 04/09/2019
-    Parameters      : update    (bool) byValue
+    Date            : 04/10/2019
+    Parameters      : update    (boolean) byValue
                       answer    (string) byReference
                       userInp   (char) byValue
-    Returns         :
+                      incorrectCounter  (int) byValue
+    Returns         : incorrectCounter  (int)
 ***/
-/*
-void stateUpdate(bool update, string &answer, char userInp)
+int wordUpdate(bool update, string &answer, char userInp, int incorrectCounter)
 {
-    int counter = 0;
-    if(update == true)
+    if(update == true)  //verifies that user input matches at least one letter of the secret word
     {
-        for(int i = 0; i < answer.size(); i++)
+        for(int i = 0; i < allLetters.size(); i++)      //loops through the available letters
         {
-            if(answer.at(i) == userInp)
+            if(allLetters.at(i) == userInp)     //checks to see if user input matches a letter
             {
-                for(int i = 0; i < allLetters.size(); i++)
-                {
-                    if(allLetters.at(i) == userInp)
-                    {
-                        allLetters.at(i) = ' ';
-                    }
-                }
-                cout << allLetters << "\n" << endl;
-                cout << userInp << " ";
-
+                allLetters.at(i) = ' ';     //updates available letters
             }
-            cout << "_ ";
         }
+        cout << "Available letters: "
+             << allLetters << "\n" << endl;
+
+        for(int i = 0; i < answer.size(); i++)  //loops through the characters of the answer
+        {
+            if(answer.at(i) == userInp)     //Checks to see if user's input matches a letter of the secret answer
+            {
+                cout << userInp << " ";
+            }
+            else
+            {
+            cout << "_ ";
+            }
+        }
+    }
+    else if(update == false)
+    {
+        incorrectCounter++;
+    }
+    return incorrectCounter;
+}
+
+/***
+    Function        : playAgain
+    Programmer(s)   : Eros Rodriguez
+    Date            : 04/09/2019
+    Parameters      : answer    (string) byReference
+    Returns         : userInp   (char)
+***/
+char playAgain(string &answer, int counter)
+{
+    char userInp;
+    if(counter == answer.size())
+    {
+    cout << "Congratulations!!\n"
+         << "The answer was: "
+         << answer
+         << endl;
+    cout << "Would you like to play again? (Y/N)" << endl;
+    cout << "Your Choice: ";
+    cin >> userInp;
+    userInp = toupper(userInp);
     }
     else
     {
-        counter++;
+    cout << "The answer was: "
+         << answer
+         << endl;
+    cout << "Play again? (Y/N)" << endl;
+    cout << "Your Choice: ";
+    cin >> userInp;
+    userInp = toupper(userInp);
     }
-
-    switch(counter)
-    {
-    case 0:
-        stateStart();
-        break;
-    case 1:
-        stateHead();
-        break;
-    case 2:
-        stateBody();
-        break;
-    case 3:
-        stateOneArm();
-        break;
-    case 4:
-        stateBothArms();
-        break;
-    case 5:
-        stateOneLeg();
-        break;
-    case 6:
-        stateDead();
-        break;
-    }
+    return userInp;
 }
-*/
+
 /****************************************************************************
                         Professor-provided functions
 ****************************************************************************/
